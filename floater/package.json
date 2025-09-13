@@ -7,7 +7,10 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "tauri": "tauri"
+    "tauri": "tauri",
+    "prebuild": "npm run prepare-cli",
+    "prepare-cli": "cd ../cli && go build -o floatercli . && TARGET_TRIPLE=$(rustc -Vv | grep host | cut -f2 -d' ') && cp floatercli ../floater/src-tauri/binaries/floatercli-$TARGET_TRIPLE",
+    "build:release": "npm run prepare-cli && tauri build --bundles app,dmg"
   },
   "dependencies": {
     "react": "^19.1.0",
