@@ -105,19 +105,14 @@ Examples:
 		}
 
 		// Success message
+		msg := "✓ Floater window shown"
 		if command.Content != "" {
-			if timer {
-				fmt.Printf("✓ Floater window shown with content: \"%s\" and timer enabled\n", command.Content)
-			} else {
-				fmt.Printf("✓ Floater window shown with content: \"%s\"\n", command.Content)
-			}
-		} else {
-			if timer {
-				fmt.Println("✓ Floater window shown with timer enabled")
-			} else {
-				fmt.Println("✓ Floater window shown")
-			}
+			msg += fmt.Sprintf(` with content: "%s"`, command.Content)
 		}
+		if timer {
+			msg += " and timer enabled"
+		}
+		fmt.Println(msg)
 
 		return nil
 	},

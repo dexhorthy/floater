@@ -56,13 +56,9 @@ function App() {
       try {
         await listen<ContentPayload>("content-updated", (event) => {
           const payload = event.payload;
-          if (payload.timer) {
-            setIsTimer(true);
-          } else {
-            setIsTimer(false);
-            if (payload.content) {
-              setContent(payload.content);
-            }
+          setIsTimer(payload.timer || false);
+          if (payload.content && !payload.timer) {
+            setContent(payload.content);
           }
         });
       } catch (error) {

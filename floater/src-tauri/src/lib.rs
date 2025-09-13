@@ -109,14 +109,13 @@ async fn handle_show_command(app_handle: &AppHandle, content: String, timer: boo
     let window = app_handle.get_webview_window("main")
         .ok_or_else(|| anyhow::anyhow!("Main window not found"))?;
 
-    // Update the content state
+    // Update content state and emit event
     let state: tauri::State<AppState> = app_handle.state();
     {
         let mut app_content = state.lock().unwrap();
         *app_content = content;
     }
 
-    // Emit event to frontend to update content
     let payload = serde_json::json!({
         "content": &*state.lock().unwrap(),
         "timer": timer
