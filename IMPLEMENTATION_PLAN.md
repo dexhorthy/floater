@@ -11,23 +11,23 @@ Floater is a macOS desktop application that creates a small floating window (200
 - [x] Make window non-resizable
 - [x] Apply green on white theme
 
-### 2. **IN PROGRESS** - CLI Interface Foundation
-- [ ] Create CLI binary (`floatercli`)
-- [ ] Implement `floatercli show "text"` command
-- [ ] Implement `floatercli hide` command
-- [ ] Setup IPC between CLI and Tauri app
+### 2. ✅ **COMPLETED** - CLI Interface Foundation
+- [x] Create CLI binary (`floatercli`)
+- [x] Implement `floatercli show "text"` command
+- [x] Implement `floatercli hide` command
+- [x] Setup IPC between CLI and Tauri app
 
-### 3. **PENDING** - Timer Widget
-- [ ] Create timer widget UI component
-- [ ] Implement stopwatch functionality (counts up)
-- [ ] Add `floatercli show "text" --timer` support
-- [ ] Handle widget state management
+### 3. ✅ **COMPLETED** - Timer Widget
+- [x] Create timer widget UI component
+- [x] Implement stopwatch functionality (counts up)
+- [x] Add `floatercli show "text" --timer` support
+- [x] Handle widget state management
 
-### 4. **PENDING** - Content Display System
-- [ ] Dynamic content rendering in floater window
-- [ ] Text content display
-- [ ] Widget container system
-- [ ] State persistence between show/hide
+### 4. ✅ **COMPLETED** - Content Display System
+- [x] Dynamic content rendering in floater window
+- [x] Text content display
+- [x] Widget container system
+- [x] State persistence between show/hide
 
 ### 5. **PENDING** - Packaging & Distribution
 - [ ] Configure Tauri for macOS DMG
@@ -41,20 +41,22 @@ Floater is a macOS desktop application that creates a small floating window (200
 - ✅ Basic Tauri + React project scaffolded
 - ✅ Window configured to spec (200x120px, draggable, non-resizable)
 - ✅ Green on white theme applied
-- 🔄 Working on CLI interface
+- ✅ CLI interface complete with timer support
+- ✅ Timer widget functional
+- ✅ Content display system working
 
 ### Architecture Decisions
 - **Frontend**: React with TypeScript
 - **Backend**: Tauri (Rust)
-- **CLI**: Node.js/Bun binary bundled with app
-- **IPC**: Tauri's built-in command system
+- **CLI**: Go binary with Cobra CLI framework
+- **IPC**: Unix domain socket communication
 - **State Management**: React state for UI, Tauri commands for persistence
 
 ### Development Workflow
-1. Start with window configuration (DONE)
-2. Build CLI interface next (IN PROGRESS)
-3. Add widget system
-4. Setup packaging
+1. ✅ Start with window configuration (DONE)
+2. ✅ Build CLI interface (DONE)
+3. ✅ Add widget system (DONE)
+4. 🔄 Setup packaging (NEXT)
 
 ## Next Steps
-Currently implementing CLI interface foundation - this is the highest priority remaining item.
+CLI interface, timer widget, and content display systems are now complete. Next priority is packaging & distribution - creating DMG installer and bundling CLI binary with the app.
