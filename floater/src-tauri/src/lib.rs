@@ -28,6 +28,13 @@ struct Response {
 // Shared state for the application content
 type AppState = Arc<Mutex<String>>;
 
+fn create_response(success: bool, message: String) -> Response {
+    Response {
+        status: if success { "success" } else { "error" }.to_string(),
+        message,
+    }
+}
+
 #[tauri::command]
 fn get_content(state: tauri::State<AppState>) -> String {
     let content = state.lock().unwrap();
@@ -36,16 +43,9 @@ fn get_content(state: tauri::State<AppState>) -> String {
 
 #[tauri::command]
 fn set_content(content: String, state: tauri::State<AppState>, app: AppHandle) -> Result<(), String> {
-    {
-        let mut app_content = state.lock().unwrap();
-        *app_content = content;
-    }
-
-    // Emit event to frontend to update content
+    *state.lock().unwrap() = content;
     app.emit("content-updated", &*state.lock().unwrap())
-        .map_err(|e| e.to_string())?;
-
-    Ok(())
+        .map_err(|e| e.to_string())
 }
 
 async fn handle_client(mut stream: UnixStream, app_handle: AppHandle) -> Result<()> {
@@ -65,34 +65,19 @@ async fn handle_client(mut stream: UnixStream, app_handle: AppHandle) -> Result<
                 match command {
                     Command::Show { content, timer } => {
                         match handle_show_command(&app_handle, content, timer).await {
-                            Ok(_) => Response {
-                                status: "success".to_string(),
-                                message: "Window shown with content".to_string(),
-                            },
-                            Err(e) => Response {
-                                status: "error".to_string(),
-                                message: format!("Failed to show window: {}", e),
-                            },
+                            Ok(_) => create_response(true, "Window shown with content".to_string()),
+                            Err(e) => create_response(false, format!("Failed to show window: {}", e)),
                         }
                     }
                     Command::Hide => {
                         match handle_hide_command(&app_handle).await {
-                            Ok(_) => Response {
-                                status: "success".to_string(),
-                                message: "Window hidden".to_string(),
-                            },
-                            Err(e) => Response {
-                                status: "error".to_string(),
-                                message: format!("Failed to hide window: {}", e),
-                            },
+                            Ok(_) => create_response(true, "Window hidden".to_string()),
+                            Err(e) => create_response(false, format!("Failed to hide window: {}", e)),
                         }
                     }
                 }
             }
-            Err(e) => Response {
-                status: "error".to_string(),
-                message: format!("Invalid JSON command: {}", e),
-            },
+            Err(e) => create_response(false, format!("Invalid JSON command: {}", e)),
         };
 
         let response_json = serde_json::to_string(&response)?;
@@ -111,10 +96,7 @@ async fn handle_show_command(app_handle: &AppHandle, content: String, timer: boo
 
     // Update content state and emit event
     let state: tauri::State<AppState> = app_handle.state();
-    {
-        let mut app_content = state.lock().unwrap();
-        *app_content = content;
-    }
+    *state.lock().unwrap() = content;
 
     let payload = serde_json::json!({
         "content": &*state.lock().unwrap(),

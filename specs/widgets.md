@@ -1,13 +1,16 @@
 
+# Widgets
+
 In addition to text content, users can add builtin widgets to floater
 
 ## widgets
 
 ### timer
 
-a stopwatch that counts up
+A stopwatch that counts up from 00:00:00.
 
 #### usage
 
 ```
-floatercli update 
+floatercli show "text" --timer
+``` 

@@ -74,6 +74,9 @@ Floater is a macOS desktop application that creates a small floating window (200
 - ✅ Reduced code duplication in CLI success messages
 - ✅ Simplified React state management logic
 - ✅ Streamlined Rust comment clarity
+- ✅ Further code cleanup: extracted helper function for response creation
+- ✅ Simplified state mutation blocks
+- ✅ Completed incomplete widgets.md specification
 - ✅ All builds pass and functionality verified
 
 **Build & Install:**
